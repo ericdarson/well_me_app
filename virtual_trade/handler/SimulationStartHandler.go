@@ -23,37 +23,47 @@ func SimulationStartHandler() gin.HandlerFunc {
 			errorSchema.ErrorCode = "BIT-17-002"
 			errorSchema.ErrorMessage.English = "INVALID INPUT PARAMETERS"
 			errorSchema.ErrorMessage.Indonesian = "PARAMETER INPUT TIDAK SESUAI"
+			simulationStartResponse.ErrorSchema = errorSchema
+			ctx.JSON(400, simulationStartResponse)
 		} else {
 			isNotDigit := func(c rune) bool { return c < '0' || c > '9' }
 			b := strings.IndexFunc(jumlahinvest, isNotDigit) == -1
 			if !b {
 				errorSchema.ErrorCode = "BIT-17-002"
-				errorSchema.ErrorMessage.English = "INVALID INPUT PARAMETERS"
-				errorSchema.ErrorMessage.Indonesian = "PARAMETER INPUT TIDAK SESUAI"
+				errorSchema.ErrorMessage.English = "NUMBER PARAMETERS CONTAIN TEXT"
+				errorSchema.ErrorMessage.Indonesian = "INPUTAN ANGKA MENGANDUNG KARAKTER"
+				simulationStartResponse.ErrorSchema = errorSchema
+				ctx.JSON(400, simulationStartResponse)
 			} else {
 				outputSchema = daoSimulationStart.StartSimulation(idproduk, jumlahinvest)
 				if outputSchema.StartDate == "-1" {
 					errorSchema.ErrorCode = "BIT-17-005"
 					errorSchema.ErrorMessage.English = "GENERAL ERROR"
 					errorSchema.ErrorMessage.Indonesian = "SISTEM SEDANG DIPERBAIKI"
+					simulationStartResponse.ErrorSchema = errorSchema
+					ctx.JSON(500, simulationStartResponse)
 				} else if outputSchema.StartDate == "-2" {
 					errorSchema.ErrorCode = "BIT-10-001"
 					errorSchema.ErrorMessage.English = "DO NOT REACH THE MINIMUM TRANSACTION"
 					errorSchema.ErrorMessage.Indonesian = "TIDAK MENCAPAI MINIMUM TRANSAKSI"
+					simulationStartResponse.ErrorSchema = errorSchema
+					ctx.JSON(200, simulationStartResponse)
 				} else if outputSchema.StartDate == "" {
 					errorSchema.ErrorCode = "BIT-17-004"
 					errorSchema.ErrorMessage.English = "DATA NOT FOUND"
 					errorSchema.ErrorMessage.Indonesian = "DATA TIDAK DITEMUKAN"
+					simulationStartResponse.ErrorSchema = errorSchema
+					ctx.JSON(404, simulationStartResponse)
 				} else {
 					errorSchema.ErrorCode = "BIT-00-000"
 					errorSchema.ErrorMessage.English = "SUCCESS"
 					errorSchema.ErrorMessage.Indonesian = "BERHASIL"
 					simulationStartResponse.OutputSchema = outputSchema
+					simulationStartResponse.ErrorSchema = errorSchema
+					ctx.JSON(200, simulationStartResponse)
 				}
 			}
 		}
-		simulationStartResponse.ErrorSchema = errorSchema
-		ctx.JSON(200, simulationStartResponse)
 	}
 }
 
