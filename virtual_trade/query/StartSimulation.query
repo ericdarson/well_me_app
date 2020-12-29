@@ -1,0 +1,9 @@
+select nab_daily, to_char(date_daily,'dd-mm-yyyy')
+from T_DAILY_NAB
+where id_produk = '%s'
+    and trunc(date_daily) = (
+        select max(trunc(date_daily))
+        from T_DAILY_NAB
+        where id_produk = '%s'
+            and trunc(date_daily) <= trunc(add_months(sysdate,-12*1))
+    ) 

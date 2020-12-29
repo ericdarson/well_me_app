@@ -1,0 +1,1 @@
+select id_jenis_reksadana, nama_jenis from M_JENIS_REKSADANA ORDER BY id_jenis_reksadana
