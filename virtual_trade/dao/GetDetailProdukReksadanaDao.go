@@ -76,23 +76,25 @@ func (dao *getDetailProdukReksadanaDao) GetDetailProdukReksadana(idproduk string
 			fmt.Println(err)
 			returnErr()
 		}
+		filename := "/query/GetDailyVirtualCart.query"
 		if timefilter == "oneyear" {
 			t = t.AddDate(-1, 0, 0)
+			filename = "/query/GetDailyVirtualCartOneYear.query"
 		} else if timefilter == "threemonths" {
 			t = t.AddDate(0, -3, 0)
 		} else if timefilter == "onemonth" {
 			t = t.AddDate(0, -1, 0)
-		} else if timefilter == "twoweeks" {
-			t = t.AddDate(0, 0, -14)
+		} else if timefilter == "oneweek" {
+			t = t.AddDate(0, 0, -7)
 		}
 		temp := t.Format(layout)
-		dat, err := ioutil.ReadFile(dir + "/query/GetDailyVirtualCart.query")
+		dat, err := ioutil.ReadFile(dir + filename)
 		if err != nil {
 			fmt.Println(err)
 			return returnErr()
 		}
 		query := string(dat)
-		query = fmt.Sprintf(query, idproduk, temp, idproduk, temp)
+		query = fmt.Sprintf(query, idproduk, temp)
 		rows, err := db.Query(query)
 		if err != nil {
 			fmt.Println(err)
