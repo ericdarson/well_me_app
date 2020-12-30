@@ -9,34 +9,34 @@ import (
 )
 
 var (
-	checkSessionDaoObject dao.CheckSessionDao = dao.NewCheckSessionDao()
+	listPlannerDao dao.ListPlannerDao = dao.NewListPlannerDao()
 )
 
-func CheckSession() gin.HandlerFunc {
+func ListPlanner() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		responseCode := 200
-		token := ctx.Query("token")
 		bcaId := ctx.Query("bcaId")
+
 		currentTime := time.Now()
-		var checkSessionResponse response.CheckSessionResponse
-		var outputSchema response.CheckSessionOutputSchema
+		var nabWidgetResponse response.ListPlannerResponse
+		var outputSchema response.ListPlannerOutputSchema
 		var errorSchema response.ErrorSchema
-		if token == "" {
+		if bcaId == "" {
 			errorSchema.ErrorCode = "BIT-17-002"
 			errorSchema.ErrorMessage.English = "INVALID INPUT PARAMETERS"
 			errorSchema.ErrorMessage.Indonesian = "PARAMETER INPUT TIDAK SESUAI"
 			responseCode = 400
 		} else {
-			result := checkSessionDaoObject.CheckSession(bcaId, token)
-			if result.Message == "Gagal" {
+			result := listPlannerDao.GetById(bcaId)
+			if result[0].IdPlan == "-1" {
 				errorSchema.ErrorCode = "BIT-17-005"
 				errorSchema.ErrorMessage.English = "GENERAL ERROR"
 				errorSchema.ErrorMessage.Indonesian = "SISTEM SEDANG DIPERBAIKI"
 				responseCode = 500
 			} else {
 				outputSchema.SystemDate = currentTime.Format("2006-01-02")
-				outputSchema.DetailCheckSession = result
-				if outputSchema.DetailCheckSession.Message == "DATA TIDAK DITEMUKAN" {
+				outputSchema.ListPlanner = result
+				if outputSchema.ListPlanner == nil {
 					errorSchema.ErrorCode = "BIT-17-004"
 					errorSchema.ErrorMessage.English = "DATA NOT FOUND"
 					errorSchema.ErrorMessage.Indonesian = "DATA TIDAK DITEMUKAN"
@@ -45,11 +45,12 @@ func CheckSession() gin.HandlerFunc {
 					errorSchema.ErrorCode = "BIT-00-000"
 					errorSchema.ErrorMessage.English = "SUCCESS"
 					errorSchema.ErrorMessage.Indonesian = "BERHASIL"
+					responseCode = 200
 				}
-				checkSessionResponse.OutputSchema = outputSchema
+				nabWidgetResponse.OutputSchema = outputSchema
 			}
 		}
-		checkSessionResponse.ErrorSchema = errorSchema
-		ctx.JSON(responseCode, checkSessionResponse)
+		nabWidgetResponse.ErrorSchema = errorSchema
+		ctx.JSON(responseCode, nabWidgetResponse)
 	}
 }

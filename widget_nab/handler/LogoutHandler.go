@@ -14,6 +14,7 @@ var (
 
 func Logout() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		responseCode := 200
 		logoutRequest := ctx.Query("token")
 		currentTime := time.Now()
 		var logoutResponse response.LogoutResponse
@@ -23,12 +24,14 @@ func Logout() gin.HandlerFunc {
 			errorSchema.ErrorCode = "BIT-17-002"
 			errorSchema.ErrorMessage.English = "INVALID INPUT PARAMETERS"
 			errorSchema.ErrorMessage.Indonesian = "PARAMETER INPUT TIDAK SESUAI"
+			responseCode = 400
 		} else {
 			result := logoutDaoObject.Logout(logoutRequest)
 			if result.Message == "GAGAL" {
 				errorSchema.ErrorCode = "BIT-17-005"
 				errorSchema.ErrorMessage.English = "GENERAL ERROR"
 				errorSchema.ErrorMessage.Indonesian = "SISTEM SEDANG DIPERBAIKI"
+				responseCode = 500
 			} else if result.Message == "DATA TIDAK DITEMUKAN" {
 				errorSchema.ErrorCode = "BIT-17-004"
 				errorSchema.ErrorMessage.English = "DATA NOT FOUND"
@@ -36,6 +39,7 @@ func Logout() gin.HandlerFunc {
 				outputSchema.SystemDate = currentTime.Format("2006-01-02")
 				outputSchema.DetailLogout = result
 				logoutResponse.OutputSchema = outputSchema
+				responseCode = 404
 			} else {
 				outputSchema.SystemDate = currentTime.Format("2006-01-02")
 				outputSchema.DetailLogout = result
@@ -43,9 +47,10 @@ func Logout() gin.HandlerFunc {
 				errorSchema.ErrorMessage.English = "SUCCESS"
 				errorSchema.ErrorMessage.Indonesian = "BERHASIL"
 				logoutResponse.OutputSchema = outputSchema
+				responseCode = 200
 			}
 		}
 		logoutResponse.ErrorSchema = errorSchema
-		ctx.JSON(200, logoutResponse)
+		ctx.JSON(responseCode, logoutResponse)
 	}
 }

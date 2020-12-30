@@ -14,6 +14,7 @@ var (
 
 func NabWidgetGetByIds() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		responseCode := 200
 		listIds := ctx.Query("ids")
 
 		currentTime := time.Now()
@@ -24,12 +25,14 @@ func NabWidgetGetByIds() gin.HandlerFunc {
 			errorSchema.ErrorCode = "BIT-17-002"
 			errorSchema.ErrorMessage.English = "INVALID INPUT PARAMETERS"
 			errorSchema.ErrorMessage.Indonesian = "PARAMETER INPUT TIDAK SESUAI"
+			responseCode = 400
 		} else {
 			result := daoObject.GetByIds(listIds)
 			if result[0].Reksadana == "-1" {
 				errorSchema.ErrorCode = "BIT-17-005"
 				errorSchema.ErrorMessage.English = "GENERAL ERROR"
 				errorSchema.ErrorMessage.Indonesian = "SISTEM SEDANG DIPERBAIKI"
+				responseCode = 500
 			} else {
 				outputSchema.SystemDate = currentTime.Format("2006-01-02")
 				outputSchema.ListNAB = result
@@ -37,15 +40,17 @@ func NabWidgetGetByIds() gin.HandlerFunc {
 					errorSchema.ErrorCode = "BIT-17-004"
 					errorSchema.ErrorMessage.English = "DATA NOT FOUND"
 					errorSchema.ErrorMessage.Indonesian = "DATA TIDAK DITEMUKAN"
+					responseCode = 404
 				} else {
 					errorSchema.ErrorCode = "BIT-00-000"
 					errorSchema.ErrorMessage.English = "SUCCESS"
 					errorSchema.ErrorMessage.Indonesian = "BERHASIL"
+					responseCode = 200
 				}
 				nabWidgetResponse.OutputSchema = outputSchema
 			}
 		}
 		nabWidgetResponse.ErrorSchema = errorSchema
-		ctx.JSON(200, nabWidgetResponse)
+		ctx.JSON(responseCode, nabWidgetResponse)
 	}
 }

@@ -16,6 +16,9 @@ func main() {
 	server.POST("/login", handler.Login())
 	server.GET("/checkSession", handler.CheckSession())
 	server.GET("/logout", handler.Logout())
+	server.GET("/getProfile", handler.Profile())
+	server.POST("/insertPlanner", handler.InsertPlanner())
+	server.GET("/getListPlanner", handler.ListPlanner())
 	dir, err := os.Getwd()
 	if err != nil {
 		fmt.Println(err)

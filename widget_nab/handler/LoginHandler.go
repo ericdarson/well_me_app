@@ -19,6 +19,7 @@ type LoginRequest struct {
 
 func Login() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		responseCode := 200
 		loginRequest := LoginRequest{}
 		ctx.Bind(&loginRequest)
 		currentTime := time.Now()
@@ -29,12 +30,14 @@ func Login() gin.HandlerFunc {
 			errorSchema.ErrorCode = "BIT-17-002"
 			errorSchema.ErrorMessage.English = "INVALID INPUT PARAMETERS"
 			errorSchema.ErrorMessage.Indonesian = "PARAMETER INPUT TIDAK SESUAI"
+			responseCode = 400
 		} else {
 			result := loginDaoObject.Login(ctx, loginRequest.BcaId, loginRequest.Password)
 			if result.Message == "" {
 				errorSchema.ErrorCode = "BIT-17-005"
 				errorSchema.ErrorMessage.English = "GENERAL ERROR"
 				errorSchema.ErrorMessage.Indonesian = "SISTEM SEDANG DIPERBAIKI"
+				responseCode = 500
 			} else {
 				outputSchema.SystemDate = currentTime.Format("2006-01-02")
 				outputSchema.DetailLogin = result
@@ -42,9 +45,10 @@ func Login() gin.HandlerFunc {
 				errorSchema.ErrorMessage.English = "SUCCESS"
 				errorSchema.ErrorMessage.Indonesian = "BERHASIL"
 				loginResponse.OutputSchema = outputSchema
+				responseCode = 200
 			}
 		}
 		loginResponse.ErrorSchema = errorSchema
-		ctx.JSON(200, loginResponse)
+		ctx.JSON(responseCode, loginResponse)
 	}
 }
