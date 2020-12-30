@@ -47,10 +47,10 @@ func NabWidgetGetByIds() gin.HandlerFunc {
 				errorSchema.ErrorCode = "BIT-17-005"
 				errorSchema.ErrorMessage.English = "GENERAL ERROR"
 				errorSchema.ErrorMessage.Indonesian = "SISTEM SEDANG DIPERBAIKI"
-				nabWidgetResponse.ErrorSchema = errorSchema
+        nabWidgetResponse.ErrorSchema = errorSchema
 				ctx.JSON(500, nabWidgetResponse)
 			} else {
-				outputSchema.SystemDate = currentTime.Format("2006-01-02")
+				outputSchema.SystemDate = currentTime.Format("02-01-2006")
 				outputSchema.ListNAB = result
 				errorSchema.ErrorCode = "BIT-00-000"
 				errorSchema.ErrorMessage.English = "SUCCESS"
