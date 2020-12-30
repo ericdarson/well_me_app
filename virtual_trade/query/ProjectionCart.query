@@ -1,0 +1,5 @@
+select to_char(date_daily,'dd-mm-yyyy'), nab_daily
+from T_DAILY_NAB
+where id_produk = '%s'
+    and trunc(date_daily) BETWEEN to_date('%s','dd-mm-yyyy') and to_date('%s','dd-mm-yyyy')
+ORDER BY date_daily
