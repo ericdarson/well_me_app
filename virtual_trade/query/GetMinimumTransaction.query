@@ -1,0 +1,3 @@
+select MINIMUM_UNIT
+from T_Produk_reksadana
+WHERE id_produk = '%s'

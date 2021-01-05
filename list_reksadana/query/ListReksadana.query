@@ -1,0 +1,15 @@
+select
+    t.id_produk,
+    t.nama_produk,
+    t.nab,
+    round((t.nab - d.nab_daily) / d.nab_daily * 100,2) as kinerja,
+    to_char(t.last_update_date,'dd-mm-yyyy')
+from
+    T_PRODUK_REKSADANA t join T_DAILY_NAB d on t.id_produk = d.id_produk
+where
+    t.ID_JENIS_REKSADANA = '%s'
+        and d.date_daily = (select trunc(max(date_daily))
+                            from T_DAILY_NAB
+                            where id_produk = t.id_produk
+                                and date_daily <= trunc(add_months(t.last_update_date,-1))
+                            )

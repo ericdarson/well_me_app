@@ -1,0 +1,32 @@
+select
+    sub.id_produk,
+    sub.nama_produk,
+    round((sub.nab_daily - dd.nab_daily) / dd.nab_daily * 100,2),
+    sub.nab_daily,
+    sub.expense_ratio,
+    sub.TOTAL_AUM,
+    sub.manager_investasi,
+    sub.tingkat_resiko,
+    sub.minimum_unit,
+    sub.bank_kustodian,
+    sub.bank_penampung,
+    to_char(sub.date_daily,'dd-mm-yyyy')
+from(
+	select 
+		t.id_produk, 
+		t.nama_produk, 
+		d.nab_daily, 
+		d.date_daily,
+		t.expense_ratio, 
+        t.TOTAL_AUM, 
+		t.manager_investasi, 
+		t.tingkat_resiko, 
+		t.minimum_unit, 
+		t.bank_kustodian, 
+		t.bank_penampung
+	from T_Produk_reksadana t join T_DAILY_NAB d on t.id_produk = d.id_produk
+	where trunc(d.date_daily) = (select trunc(max(date_daily)) from T_DAILY_NAB where trunc(date_daily) <= trunc(add_months(sysdate,-12*0)) and id_produk = '%s')
+		and t.id_produk = '%s'
+	) sub
+	join T_DAILY_NAB dd on sub.id_produk = dd.id_produk
+where trunc(dd.date_daily) = (select trunc(max(date_daily)) from T_DAILY_NAB where id_produk = sub.id_produk and trunc(date_daily) <= trunc(add_months(sub.date_daily,-11*1)))

@@ -1,4 +1,4 @@
-module widget_nab_service
+module virtual_trade_api
 
 go 1.15
 

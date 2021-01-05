@@ -1,4 +1,4 @@
-module widget_nab_service
+module list_reksadana_api
 
 go 1.15
 

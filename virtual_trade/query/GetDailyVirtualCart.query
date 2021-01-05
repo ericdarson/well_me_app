@@ -1,0 +1,7 @@
+select 
+    to_char(d.date_daily,'dd-mm-yyyy') as dates,
+    d.nab_daily
+from T_DAILY_NAB d
+WHERE d.id_produk = '%s' 
+    and trunc(d.date_daily) > trunc(to_date('%s','dd-mm-yyyy'))
+ORDER BY d.date_daily

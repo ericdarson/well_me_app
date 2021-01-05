@@ -1,0 +1,9 @@
+select nab_daily, to_char(date_daily,'dd-mm-yyyy')
+from T_DAILY_NAB
+WHERE id_produk = '%s' 
+    and date_daily = (
+        select max(date_daily)
+        from T_DAILY_NAB
+        where id_produk = '%s'
+            and trunc(date_daily) < to_date('%s','dd-mm-yyyy')
+    ) 
