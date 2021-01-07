@@ -23,9 +23,10 @@ func NewSimulationStart() SimulationStartDao {
 }
 func returnErrSimulationStart() response.SimulationStartOutputSchema {
 	return response.SimulationStartOutputSchema{
-		JumlahUnit:  -1,
-		StartingNab: "-1",
-		StartDate:   "-1",
+		JumlahUnit:      -1,
+		StartingNab:     "-1",
+		StartDate:       "-1",
+		StartDateString: "-1",
 	}
 }
 
@@ -61,9 +62,10 @@ func (dao *simulationStartDao) StartSimulation(idproduk string, jumlahinvest str
 		rows.Scan(&minimumTransaction)
 		if minimumTransaction > jumlahinvestfloat {
 			return response.SimulationStartOutputSchema{
-				JumlahUnit:  -2,
-				StartingNab: "-2",
-				StartDate:   "-2",
+				JumlahUnit:      -2,
+				StartingNab:     "-2",
+				StartDate:       "-2",
+				StartDateString: "-2",
 			}
 		}
 	}
@@ -86,7 +88,7 @@ func (dao *simulationStartDao) StartSimulation(idproduk string, jumlahinvest str
 	defer rows.Close()
 
 	for rows.Next() {
-		rows.Scan(&simulationStartData.StartingNab, &simulationStartData.StartDate)
+		rows.Scan(&simulationStartData.StartingNab, &simulationStartData.StartDate, &simulationStartData.StartDateString)
 		startingnab, _ := strconv.ParseFloat(simulationStartData.StartingNab, 64)
 		simulationStartData.JumlahUnit = jumlahinvestfloat / startingnab
 	}

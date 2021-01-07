@@ -10,7 +10,8 @@ select
     sub.minimum_unit,
     sub.bank_kustodian,
     sub.bank_penampung,
-    to_char(sub.date_daily,'dd-mm-yyyy')
+    to_char(sub.date_daily,'dd-mm-yyyy'),
+	to_char(sub.date_daily,'dd mon yy')
 from(
 	select 
 		t.id_produk, 

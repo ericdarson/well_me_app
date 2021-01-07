@@ -1,6 +1,6 @@
-select t.dates, t.nab_daily
+select t.dates, t.datestring , t.nab_daily
 from(
-    select rownum as baris, to_char(d.date_daily,'dd-mm-yyyy') as dates, d.nab_daily
+    select rownum as baris, to_char(d.date_daily,'dd-mm-yyyy') as dates,  to_char(d.date_daily,'dd mon yy') as datestring, d.nab_daily
     from T_DAILY_NAB d
     WHERE d.id_produk = '%s' and trunc(d.date_daily) > trunc(to_date('%s','dd-mm-yyyy'))
     ORDER BY d.date_daily
