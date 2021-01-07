@@ -1,0 +1,13 @@
+select 
+    p.kode_promo, 
+    p.title, 
+    p.subtitle, 
+    p.deskripsi,
+    p.minimum_transaction,
+    p.cashback, 
+    to_char(p.tanggal_selesai, 'dd Mon yy')
+from T_PROMO p 
+where
+    LENGTH(TRIM(TRANSLATE(p.kode_promo, '0123456789',' '))) is not null
+    and trunc(sysdate) between trunc(p.tanggal_mulai) and trunc(p.tanggal_selesai)
+    and p.kode_promo not in (select kode_promo from T_NASABAH_PROMO where bca_id = '%s')
