@@ -1,0 +1,3 @@
+select  nama_plan, goal_amount, current_amount, puzzle_randomize, due_date
+from T_PLANNER
+where id_plan = '%s'
