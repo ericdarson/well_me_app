@@ -1,4 +1,4 @@
-module cms_api
+module planner_resiko_api
 
 go 1.15
 

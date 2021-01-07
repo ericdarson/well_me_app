@@ -1,0 +1,3 @@
+select j.ID_JENIS_REKSADANA, j.nama_jenis, r.persentase
+from M_resiko r join M_JENIS_REKSADANA j on r.ID_JENIS_REKSADANA = j.ID_JENIS_REKSADANA
+where r.bobot_resiko = (select bobot_resiko from T_NASABAH where bca_id = '%s') and r.persentase > 0
