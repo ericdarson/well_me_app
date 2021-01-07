@@ -1,4 +1,4 @@
-select nab_daily, to_char(date_daily,'dd-mm-yyyy')
+select nab_daily, to_char(date_daily,'dd-mm-yyyy'), to_char(date_daily,'dd Mon yy')
 from T_DAILY_NAB
 WHERE id_produk = '%s' 
     and date_daily = (

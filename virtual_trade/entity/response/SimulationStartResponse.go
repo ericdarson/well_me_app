@@ -6,7 +6,8 @@ type SimulationStartResponse struct {
 }
 
 type SimulationStartOutputSchema struct {
-	JumlahUnit  float64 `json:"jumlah_unit"`
-	StartingNab string  `json:"starting_nab"`
-	StartDate   string  `json:"start_date"`
+	JumlahUnit      float64 `json:"jumlah_unit"`
+	StartingNab     string  `json:"starting_nab"`
+	StartDate       string  `json:"start_date"`
+	StartDateString string  `json:"start_datestring"`
 }

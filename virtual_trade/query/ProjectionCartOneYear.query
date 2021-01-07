@@ -1,4 +1,4 @@
-select to_char(date_daily,'dd-mm-yyyy'), nab_daily
+select to_char(date_daily,'dd-mm-yyyy'), to_char(date_daily,'dd Mon yy'), nab_daily
 from (
     select rownum as baris, date_daily, nab_daily
     from T_DAILY_NAB
