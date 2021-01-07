@@ -9,6 +9,7 @@ type ProjectionOutputSchema struct {
 	ID                  string               `json:"id_produk"`
 	Nama                string               `json:"nama_produk"`
 	Date                string               `json:"date"`
+	DateString          string               `json:"datestring"`
 	Nab                 string               `json:"current_nab"`
 	CagrOneYear         float64              `json:"cagr_one_year"`
 	CagrThreeMonths     float64              `json:"cagr_three_months"`
@@ -21,6 +22,7 @@ type ProjectionOutputSchema struct {
 }
 
 type ProjectionCartData struct {
-	DateDaily string `json:"date_daily"`
-	NabDaily  string `json:"nab_daily"`
+	DateDaily       string `json:"date_daily"`
+	DateDailyString string `json:"datestring_daily"`
+	NabDaily        string `json:"nab_daily"`
 }

@@ -29,6 +29,7 @@ func returnErrProjection() response.ProjectionOutputSchema {
 		ID:                  "-1",
 		Nama:                "-1",
 		Date:                "-1",
+		DateString:          "-1",
 		Nab:                 "-1",
 		CagrOneYear:         -1,
 		CagrThreeMonths:     -1,
@@ -68,13 +69,14 @@ func (dao *projectionDao) GetProjectionResult(idproduk string, datesimulation st
 	boolErr := true
 	for rows.Next() {
 		boolErr = false
-		rows.Scan(&projectionData.ID, &projectionData.Nama, &projectionData.Date, &projectionData.Nab)
+		rows.Scan(&projectionData.ID, &projectionData.Nama, &projectionData.Date, &projectionData.DateString, &projectionData.Nab)
 	}
 	if boolErr {
 		return response.ProjectionOutputSchema{
 			ID:                  "-2",
 			Nama:                "-2",
 			Date:                "-2",
+			DateString:          "-2",
 			Nab:                 "-2",
 			CagrOneYear:         -2,
 			CagrThreeMonths:     -2,
@@ -134,10 +136,12 @@ func getCartQuery(db *sql.DB, dir string, filename string, id string, time strin
 	for rows.Next() {
 		var temp1 string
 		var temp2 string
-		rows.Scan(&temp1, &temp2)
+		var temp3 string
+		rows.Scan(&temp1, &temp2, &temp3)
 		cartData = append(cartData, response.ProjectionCartData{
-			DateDaily: temp1,
-			NabDaily:  temp2,
+			DateDaily:       temp1,
+			DateDailyString: temp2,
+			NabDaily:        temp3,
 		})
 	}
 	return cartData

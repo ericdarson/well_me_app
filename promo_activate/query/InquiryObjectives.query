@@ -1,0 +1,16 @@
+select 
+    p.kode_promo, 
+    p.title, 
+    p.subtitle, 
+    p.deskripsi, 
+    nvl(n.akumulasi,-1), 
+    p.target_akumulasi, 
+    p.cashback, 
+    to_char(p.tanggal_selesai, 'dd Mon yy')
+from T_PROMO p 
+    left join T_NASABAH_PROMO n on p.kode_promo = n.kode_promo and n.bca_id = '%s' and n.USAGE_FLAG = 0
+where
+    LENGTH(TRIM(TRANSLATE(p.kode_promo, '0123456789',' '))) is null
+    and trunc(sysdate) between trunc(p.tanggal_mulai) and trunc(p.tanggal_selesai)
+
+order by 5

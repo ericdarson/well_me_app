@@ -36,6 +36,7 @@ func returnErr() response.GetDetailProdukReksadanaOutputSchema {
 		BankKustodian:    "-1",
 		BankPenampung:    "-1",
 		SystemDate:       "-1",
+		SystemDateString: "-1",
 		NabDaily:         nil,
 	}
 
@@ -67,7 +68,7 @@ func (dao *getDetailProdukReksadanaDao) GetDetailProdukReksadana(idproduk string
 
 	single := new(response.GetDetailProdukReksadanaOutputSchema)
 	for rows.Next() {
-		rows.Scan(&single.ID, &single.Nama, &single.Cagr, &single.Nab, &single.Expratio, &single.Aum, &single.ManagerInvestasi, &single.Resiko, &single.Minimal, &single.BankKustodian, &single.BankPenampung, &single.SystemDate)
+		rows.Scan(&single.ID, &single.Nama, &single.Cagr, &single.Nab, &single.Expratio, &single.Aum, &single.ManagerInvestasi, &single.Resiko, &single.Minimal, &single.BankKustodian, &single.BankPenampung, &single.SystemDate, &single.SystemDateString)
 	}
 	if single.SystemDate != "" {
 		layout := "02-01-2006"
@@ -105,10 +106,12 @@ func (dao *getDetailProdukReksadanaDao) GetDetailProdukReksadana(idproduk string
 		for rows.Next() {
 			var t1 string
 			var t2 string
-			rows.Scan(&t1, &t2)
+			var t3 string
+			rows.Scan(&t1, &t2, &t3)
 			dailySingle := response.DailyNab{
-				Date: t1,
-				Nab:  t2,
+				Date:       t1,
+				DateString: t2,
+				Nab:        t3,
 			}
 			listDailyNab = append(listDailyNab, dailySingle)
 		}

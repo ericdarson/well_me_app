@@ -18,10 +18,12 @@ type GetDetailProdukReksadanaOutputSchema struct {
 	BankKustodian    string     `json:"bank_kustodian"`
 	BankPenampung    string     `json:"bank_penampung"`
 	SystemDate       string     `json:"system_date"`
+	SystemDateString string     `json:"system_date_string"`
 	NabDaily         []DailyNab `json:"daily_nab"`
 }
 
 type DailyNab struct {
-	Date string `json:"date"`
-	Nab  string `json:"nab_daily"`
+	Date       string `json:"date"`
+	DateString string `json:"datestring"`
+	Nab        string `json:"nab_daily"`
 }

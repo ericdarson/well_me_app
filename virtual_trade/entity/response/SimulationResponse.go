@@ -6,6 +6,7 @@ type SimulationResponse struct {
 }
 
 type SimulationOutputSchema struct {
-	DateSimulation string `json:"nab_date"`
-	NabSimulation  string `json:"nab_simulation"`
+	DateSimulation       string `json:"nab_date"`
+	DateSimulationString string `json:"nab_datestring"`
+	NabSimulation        string `json:"nab_simulation"`
 }

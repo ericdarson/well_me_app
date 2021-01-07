@@ -22,8 +22,9 @@ func NewSimulation() SimulationDao {
 }
 func returnErrSimluation() response.SimulationOutputSchema {
 	return response.SimulationOutputSchema{
-		DateSimulation: "-1",
-		NabSimulation:  "-1",
+		DateSimulation:       "-1",
+		DateSimulationString: "-1",
+		NabSimulation:        "-1",
 	}
 }
 
@@ -52,7 +53,7 @@ func (dao *simulationDao) GetSimulationResult(idproduk string, simulationdate st
 	defer rows.Close()
 
 	for rows.Next() {
-		rows.Scan(&simulationData.NabSimulation, &simulationData.DateSimulation)
+		rows.Scan(&simulationData.NabSimulation, &simulationData.DateSimulation, &simulationData.DateSimulationString)
 	}
 
 	return simulationData

@@ -1,4 +1,4 @@
-select t.id_produk, t.nama_produk, to_char(d.date_daily,'dd-mm-yyyy'), d.nab_daily
+select t.id_produk, t.nama_produk, to_char(d.date_daily,'dd-mm-yyyy'), to_char(d.date_daily,'dd Mon yy'), d.nab_daily
 from T_Produk_reksadana t 
     join T_DAILY_NAB d on t.id_produk = d.id_produk
 where
