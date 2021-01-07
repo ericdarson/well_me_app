@@ -1,0 +1,13 @@
+select 
+    kode_promo,
+    title, 
+    subtitle, 
+    deskripsi,
+     target_akumulasi, 
+     cashback, 
+     minimum_transaction, 
+     to_char(tanggal_mulai, 'dd-mm-yyyy'), 
+     to_char(tanggal_selesai, 'dd-mm-yyyy'), 
+     decode(LENGTH(TRIM(TRANSLATE(kode_promo, '0123456789',' '))),null,'O','P'),
+     case when sysdate between tanggal_mulai and tanggal_selesai then '1' else '0' end case
+from T_PROMO
