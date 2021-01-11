@@ -1,0 +1,1 @@
+select nama_produk, nab from T_PRODUK_REKSADANA WHERE id_produk in (%s)
