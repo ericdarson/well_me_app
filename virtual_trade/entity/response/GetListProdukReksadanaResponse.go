@@ -10,4 +10,5 @@ type GetListProdukReksadanaOutputSchema struct {
 	Nama             string `json:"nama"`
 	KinerjaSatuBulan string `json:"kinerja_satu_bulan"`
 	Nab              string `json:"nab"`
+	MaxBackwardDate  string `json:"max_backward_date"`
 }
