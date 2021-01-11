@@ -5,5 +5,5 @@ WHERE id_produk = '%s'
         select max(date_daily)
         from T_DAILY_NAB
         where id_produk = '%s'
-            and trunc(date_daily) < to_date('%s','dd-mm-yyyy')
+            and trunc(date_daily) <= to_date('%s','dd-mm-yyyy')
     ) 

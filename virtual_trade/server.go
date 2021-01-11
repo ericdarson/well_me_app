@@ -14,8 +14,8 @@ func main() {
 
 	server.GET("/reksadana", handler.GetJenisReksadanaHandler())
 	server.GET("/products/:id-jenis", handler.GetListProdukReksadanaHandler())
-	server.GET("/product/:id-produk/:filter", handler.GetDetailProdukReksadanaHandler())
-	server.GET("/simulation/start/:id-produk/:jumlahinvest", handler.SimulationStartHandler())
+	server.GET("/product/:id-produk/:simulation-date", handler.GetDetailProdukReksadanaHandler())
+	server.GET("/simulation/start/:starting-date/:id-produk/:jumlahinvest", handler.SimulationStartHandler())
 	server.GET("/simulation/forward/:id-produk/:simulation-date", handler.SimulationHandler())
 	server.GET("/projection/:id-produk/:simulation-date", handler.ProjectionHandler())
 

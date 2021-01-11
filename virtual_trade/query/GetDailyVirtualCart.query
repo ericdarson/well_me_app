@@ -1,6 +1,6 @@
 select 
     to_char(d.date_daily,'dd-mm-yyyy') as dates,
-    to_char(d.date_daily,'dd mon yy') as dates,
+    to_char(d.date_daily,'dd Mon yy') as dates,
     d.nab_daily
 from T_DAILY_NAB d
 WHERE d.id_produk = '%s' 
