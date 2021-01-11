@@ -51,7 +51,7 @@ func (dao *getListProdukReksadanaDao) GetListProdukReksadana(idjenis string) []r
 		return listProduk
 	}
 	query := string(dat)
-	query = fmt.Sprintf(query, idjenis, idjenis)
+	query = fmt.Sprintf(query, idjenis)
 	rows, err := db.Query(query)
 	if err != nil {
 		fmt.Println(err)
@@ -71,12 +71,14 @@ func (dao *getListProdukReksadanaDao) GetListProdukReksadana(idjenis string) []r
 		var nama string
 		var kinerja string
 		var nab string
-		rows.Scan(&id, &nama, &nab, &kinerja)
+		var date string
+		rows.Scan(&id, &nama, &nab, &kinerja, &date)
 		single := response.GetListProdukReksadanaOutputSchema{
 			Id:               id,
 			Nama:             nama,
 			KinerjaSatuBulan: kinerja,
 			Nab:              nab,
+			MaxBackwardDate:  date,
 		}
 		listProduk = append(listProduk, single)
 	}

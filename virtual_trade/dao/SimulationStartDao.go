@@ -12,7 +12,7 @@ import (
 )
 
 type SimulationStartDao interface {
-	StartSimulation(string, string) response.SimulationStartOutputSchema
+	StartSimulation(string, string, string) response.SimulationStartOutputSchema
 }
 
 type simulationStartDao struct {
@@ -30,7 +30,7 @@ func returnErrSimulationStart() response.SimulationStartOutputSchema {
 	}
 }
 
-func (dao *simulationStartDao) StartSimulation(idproduk string, jumlahinvest string) response.SimulationStartOutputSchema {
+func (dao *simulationStartDao) StartSimulation(idproduk string, jumlahinvest string, startDate string) response.SimulationStartOutputSchema {
 	jumlahinvestfloat, _ := strconv.ParseFloat(jumlahinvest, 64)
 	var simulationStartData response.SimulationStartOutputSchema
 	conn := dbconnection.New()
@@ -79,7 +79,7 @@ func (dao *simulationStartDao) StartSimulation(idproduk string, jumlahinvest str
 		return returnErrSimulationStart()
 	}
 	query = string(dat)
-	query = fmt.Sprintf(query, idproduk, idproduk)
+	query = fmt.Sprintf(query, idproduk, idproduk, startDate)
 	rows, err = db.Query(query)
 	if err != nil {
 		fmt.Println(err)

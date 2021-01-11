@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"regexp"
 	"strings"
 	"virtual_trade_api/dao"
 	"virtual_trade_api/entity/response"
@@ -16,13 +17,21 @@ func SimulationStartHandler() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		idproduk := ctx.Param("id-produk")
 		jumlahinvest := ctx.Param("jumlahinvest")
+		startDate := ctx.Param("starting-date")
 		var errorSchema response.ErrorSchema
 		var outputSchema response.SimulationStartOutputSchema
 		var simulationStartResponse response.SimulationStartResponse
-		if idproduk == "" || jumlahinvest == "" {
+		re := regexp.MustCompile("(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[012])/((19|20)\\d\\d)")
+		if idproduk == "" || jumlahinvest == "" || startDate == "" {
 			errorSchema.ErrorCode = "BIT-17-002"
 			errorSchema.ErrorMessage.English = "INVALID INPUT PARAMETERS"
 			errorSchema.ErrorMessage.Indonesian = "PARAMETER INPUT TIDAK SESUAI"
+			simulationStartResponse.ErrorSchema = errorSchema
+			ctx.JSON(400, simulationStartResponse)
+		} else if !(re.MatchString(strings.ReplaceAll(startDate, "-", "/"))) {
+			errorSchema.ErrorCode = "BIT-17-006"
+			errorSchema.ErrorMessage.English = "INVALID DATE FORMAT"
+			errorSchema.ErrorMessage.Indonesian = "FORMAT TANGGAL TIDAK SESUAI"
 			simulationStartResponse.ErrorSchema = errorSchema
 			ctx.JSON(400, simulationStartResponse)
 		} else {
@@ -35,7 +44,7 @@ func SimulationStartHandler() gin.HandlerFunc {
 				simulationStartResponse.ErrorSchema = errorSchema
 				ctx.JSON(400, simulationStartResponse)
 			} else {
-				outputSchema = daoSimulationStart.StartSimulation(idproduk, jumlahinvest)
+				outputSchema = daoSimulationStart.StartSimulation(idproduk, jumlahinvest, startDate)
 				if outputSchema.StartDate == "-1" {
 					errorSchema.ErrorCode = "BIT-17-005"
 					errorSchema.ErrorMessage.English = "GENERAL ERROR"
