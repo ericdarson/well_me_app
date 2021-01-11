@@ -2,8 +2,8 @@ select to_char(date_daily,'dd-mm-yyyy'), to_char(date_daily,'dd Mon yy'), nab_da
 from (
     select rownum as baris, date_daily, nab_daily
     from T_DAILY_NAB
-    where id_produk = '%s'
-        and trunc(date_daily) BETWEEN to_date('%s','dd-mm-yyyy') and to_date('%s','dd-mm-yyyy')
+    where id_produk = %s
+        and trunc(date_daily) BETWEEN ADD_MONTHS(sysdate,-12) and to_date(sysdate)
     ORDER BY date_daily
     )
 WHERE mod(baris,4) = 0
