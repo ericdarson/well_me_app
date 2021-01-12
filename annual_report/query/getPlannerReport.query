@@ -1,0 +1,6 @@
+select * from (
+    select nama_plan,goal_amount, (select count(1) from t_planner where bca_id = '%s' and is_done = 0) as unfinished_plan,
+    (select count(1) from t_planner where bca_id = '%s' and is_done = 1) as finished_plan from T_planner
+    where bca_id = '%s' and is_done = 1
+    order by goal_amount desc
+) where ROWNUM <= 1
