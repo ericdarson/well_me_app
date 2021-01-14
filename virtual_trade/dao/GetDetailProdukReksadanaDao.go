@@ -95,7 +95,7 @@ func (dao *getDetailProdukReksadanaDao) GetDetailProdukReksadana(idproduk string
 				return returnErr()
 			}
 			query := string(dat)
-			query = fmt.Sprintf(query, idproduk, temp)
+			query = fmt.Sprintf(query, idproduk, temp, single.SystemDate)
 			rows, err := db.Query(query)
 			if err != nil {
 				fmt.Println(err)
