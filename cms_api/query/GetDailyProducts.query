@@ -1,0 +1,3 @@
+select p.id_produk, p.nama_produk, nvl(p.nab,-1), decode(d.nab_daily,null,0,1) 
+from t_produk_reksadana p left join t_daily_nab d on p.id_produk = d.id_produk and trunc(d.date_daily) = trunc(sysdate)
+where p.id_jenis_reksadana = '%s'

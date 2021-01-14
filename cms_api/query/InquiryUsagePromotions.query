@@ -1,0 +1,5 @@
+select p.KODE_PROMO, p.TITLE, count(n.BCA_ID)
+from T_PROMO p left join T_NASABAH_PROMO n ON p.KODE_PROMO = n.KODE_PROMO
+where LENGTH(TRIM(TRANSLATE(p.kode_promo, '0123456789',' '))) IS NOT null
+AND trunc(SYSDATE) BETWEEN p.tanggal_mulai and p.tanggal_selesai
+GROUP BY p.KODE_PROMO, p.TITLE

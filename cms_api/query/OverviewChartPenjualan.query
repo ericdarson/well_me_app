@@ -1,0 +1,5 @@
+select to_char(tanggal_order_jual,'%s'), to_char(min(tanggal_order_jual),'dd Mon yy'), sum(nab * jumlah_unit)
+from T_Transaksi_jual
+where trunc(tanggal_order_jual) between to_date('%s','dd-mm-yyyy') and to_date('%s','dd-mm-yyyy') and status_penjualan <> 0
+group by to_char(tanggal_order_jual,'%s')
+ORDER BY min(tanggal_order_jual)

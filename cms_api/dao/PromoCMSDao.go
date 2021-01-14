@@ -15,7 +15,7 @@ import (
 	_ "github.com/godror/godror"
 )
 
-type CMSDao interface {
+type PromoCMSDao interface {
 	InsertPromoAkumulasi(request.InsertPromoAkumulasiRequest) response.InsertPromoAkumulasiOutputSchema
 	InsertPromoTransaksi(request.InsertPromoTransaksiRequest) string
 	NonAktifPromo(string) string
@@ -24,11 +24,11 @@ type CMSDao interface {
 	UpdatePromoTransaksi(request.InsertPromoTransaksiRequest, string) string
 }
 
-type cmsDao struct {
+type promoCMSDao struct {
 }
 
-func NewCMS() CMSDao {
-	return &cmsDao{}
+func NewPromoCMS() PromoCMSDao {
+	return &promoCMSDao{}
 }
 
 func returnErrInsertPromoAkumulasi() response.InsertPromoAkumulasiOutputSchema {
@@ -60,7 +60,7 @@ func returnErrInquiryPromo() []response.InquiryPromoOutputSchema {
 	}}
 }
 
-func (dao *cmsDao) InquiryPromo(filename string) []response.InquiryPromoOutputSchema {
+func (dao *promoCMSDao) InquiryPromo(filename string) []response.InquiryPromoOutputSchema {
 
 	var outputSchema []response.InquiryPromoOutputSchema
 	conn := dbconnection.New()
@@ -93,7 +93,7 @@ func (dao *cmsDao) InquiryPromo(filename string) []response.InquiryPromoOutputSc
 	return outputSchema
 }
 
-func (dao *cmsDao) InsertPromoAkumulasi(req request.InsertPromoAkumulasiRequest) response.InsertPromoAkumulasiOutputSchema {
+func (dao *promoCMSDao) InsertPromoAkumulasi(req request.InsertPromoAkumulasiRequest) response.InsertPromoAkumulasiOutputSchema {
 
 	conn := dbconnection.New()
 	db := conn.GetConnection()
@@ -126,7 +126,7 @@ func (dao *cmsDao) InsertPromoAkumulasi(req request.InsertPromoAkumulasiRequest)
 	return outputSchema
 }
 
-func (dao *cmsDao) InsertPromoTransaksi(req request.InsertPromoTransaksiRequest) string {
+func (dao *promoCMSDao) InsertPromoTransaksi(req request.InsertPromoTransaksiRequest) string {
 
 	conn := dbconnection.New()
 	db := conn.GetConnection()
@@ -145,7 +145,7 @@ func (dao *cmsDao) InsertPromoTransaksi(req request.InsertPromoTransaksiRequest)
 	return result
 }
 
-func (dap *cmsDao) NonAktifPromo(kode_promo string) string {
+func (dap *promoCMSDao) NonAktifPromo(kode_promo string) string {
 	conn := dbconnection.New()
 	db := conn.GetConnection()
 	var result string
@@ -155,6 +155,7 @@ func (dap *cmsDao) NonAktifPromo(kode_promo string) string {
 
 	query := `BEGIN SP_NONAKTIF_PROMO('%s','SYSTEM API',:1 ); END;`
 	query = fmt.Sprintf(query, kode_promo)
+	fmt.Println(query)
 	if _, err := db.ExecContext(ctx, query, sql.Out{Dest: &result}); err != nil {
 		log.Printf("Error running %q: %+v", query, err)
 		return "ERROR"
@@ -163,7 +164,7 @@ func (dap *cmsDao) NonAktifPromo(kode_promo string) string {
 	return result
 }
 
-func (dao *cmsDao) UpdatePromoAkumulasi(req request.InsertPromoAkumulasiRequest, kodePromo string) string {
+func (dao *promoCMSDao) UpdatePromoAkumulasi(req request.InsertPromoAkumulasiRequest, kodePromo string) string {
 
 	conn := dbconnection.New()
 	db := conn.GetConnection()
@@ -172,7 +173,7 @@ func (dao *cmsDao) UpdatePromoAkumulasi(req request.InsertPromoAkumulasiRequest,
 	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 	defer cancel()
 
-	query := `BEGIN SP_UPDATE_PROMO_AKUMULASI('%S', '%s','%s', to_date('%s','dd-mm-yyyy'), to_date('%s','dd-mm-yyyy'),'%s', %f, %f ,'SYSTEM API',:1 ); END;`
+	query := `BEGIN SP_UPDATE_PROMO_AKUMULASI('%s', '%s','%s', to_date('%s','dd-mm-yyyy'), to_date('%s','dd-mm-yyyy'),'%s', %f, %f ,'SYSTEM API',:1 ); END;`
 	query = fmt.Sprintf(query, kodePromo, req.Title, req.Subtitle, req.StartDate, req.EndDate, req.Description, req.CashBack, req.Target)
 	if _, err := db.ExecContext(ctx, query, sql.Out{Dest: &result}); err != nil {
 		log.Printf("Error running %q: %+v", query, err)
@@ -182,7 +183,7 @@ func (dao *cmsDao) UpdatePromoAkumulasi(req request.InsertPromoAkumulasiRequest,
 	return result
 }
 
-func (dao *cmsDao) UpdatePromoTransaksi(req request.InsertPromoTransaksiRequest, kodePromo string) string {
+func (dao *promoCMSDao) UpdatePromoTransaksi(req request.InsertPromoTransaksiRequest, kodePromo string) string {
 
 	conn := dbconnection.New()
 	db := conn.GetConnection()
