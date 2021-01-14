@@ -269,8 +269,8 @@ func NonAktifPromo() gin.HandlerFunc {
 				ctx.JSON(500, JSONReponse)
 			} else if result == "NOT FOUND" {
 				errorSchema.ErrorCode = "BIT-17-004"
-				errorSchema.ErrorMessage.English = "PROMO NOT FOUND"
-				errorSchema.ErrorMessage.Indonesian = "PROMO TIDAK DITEMUKAN"
+				errorSchema.ErrorMessage.English = "PROMO NOT FOUND OR INACTIVE"
+				errorSchema.ErrorMessage.Indonesian = "PROMO TIDAK DITEMUKAN ATAU SUDAH TIDAK AKTIF"
 				JSONReponse.ErrorSchema = errorSchema
 				ctx.JSON(404, JSONReponse)
 			} else if result == "SUKSES" {
@@ -308,7 +308,7 @@ func AdminAuthentication(ctx *gin.Context) bool {
 func UpdatePromoAkumulasi() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		layout := "02-01-2006"
-		var JSONReponse response.InsertPromoAkumulasiResponse
+		var JSONReponse response.OnlyErrorSchemaResponse
 		var errorSchema response.ErrorSchema
 		var JSONRequest request.InsertPromoAkumulasiRequest
 		kodePromo := ctx.Param("kode-promo")
@@ -340,7 +340,7 @@ func UpdatePromoAkumulasi() gin.HandlerFunc {
 			errorSchema.ErrorMessage.Indonesian = "FORMAT TANGGAL TIDAK SESUAI"
 			JSONReponse.ErrorSchema = errorSchema
 			ctx.JSON(400, JSONReponse)
-		} else if strings.IndexFunc(kodePromo, isNotDigit) == -1 {
+		} else if strings.IndexFunc(kodePromo, isNotDigit) != -1 {
 			errorSchema.ErrorCode = "BIT-17-006"
 			errorSchema.ErrorMessage.English = "INVALID PROMO CODE FORMAT"
 			errorSchema.ErrorMessage.Indonesian = "FORMAT KODE PROMO TIDAK SESUAI"

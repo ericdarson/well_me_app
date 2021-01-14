@@ -1,0 +1,5 @@
+select to_char(tanggal_order_beli,'%s'), to_char(min(tanggal_order_beli),'dd Mon yy'), sum(total_beli)
+from T_Transaksi_beli
+where trunc(tanggal_order_beli) between to_date('%s','dd-mm-yyyy') and to_date('%s','dd-mm-yyyy')
+group by to_char(tanggal_order_beli,'%s')
+ORDER BY min(tanggal_order_beli)
