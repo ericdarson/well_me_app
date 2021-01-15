@@ -69,9 +69,9 @@ func (dao *annualReportDao) GetAnnualReport(bcaId string) []response.AnnualRepor
 		var InvestmentTimes string
 		var ReportTarget response.AnnualReportTarget
 		var TopReksadana []string
-		var TargetTitle string
-		var InvestmentTitle string
-		var JoinTitle string
+		var DetailTarget response.TargetDetail
+		var DetailInvestment response.InvestmentDetail
+		var DetailJoin response.JoinDetail
 
 		rows.Scan(&BcaId, &Nama, &JoinedTime, &NoRek)
 		InvestmentTimes = getInvestmentTimes(db, dir, "/query/getInvestmentTimes.query", BcaId)
@@ -87,20 +87,20 @@ func (dao *annualReportDao) GetAnnualReport(bcaId string) []response.AnnualRepor
 			fmt.Println(NoRek, "is not an integer.")
 		}
 
-		TargetTitle = getTargetTitle(ReportTarget, tempMod)
-		InvestmentTitle = getInvestTitle(InvestmentTimes, tempMod)
-		JoinTitle = getJoinTitle(JoinedTime, tempMod)
+		DetailTarget = getTargetDetail(ReportTarget, tempMod)
+		DetailInvestment = getInvestDetail(InvestmentTimes, tempMod)
+		DetailJoin = getJoinDetail(JoinedTime, tempMod)
 
 		single := response.AnnualReportOutputSchema{
-			BcaId:           BcaId,
-			Nama:            Nama,
-			JoinedTime:      JoinedTime,
-			InvestmentTimes: InvestmentTimes,
-			ReportTarget:    ReportTarget,
-			TopReksadana:    TopReksadana,
-			TargetTitle:     TargetTitle,
-			InvestmentTitle: InvestmentTitle,
-			JoinTitle:       JoinTitle,
+			BcaId:            BcaId,
+			Nama:             Nama,
+			JoinedTime:       JoinedTime,
+			InvestmentTimes:  InvestmentTimes,
+			ReportTarget:     ReportTarget,
+			TopReksadana:     TopReksadana,
+			DetailTarget:     DetailTarget,
+			DetailInvestment: DetailInvestment,
+			DetailJoin:       DetailJoin,
 		}
 		annualReport = append(annualReport, single)
 	}
@@ -193,27 +193,38 @@ func getTopReksadana(db *sql.DB, dir string, filename string, bcaId string) []st
 	return listReksadana
 }
 
-func getTargetTitle(report response.AnnualReportTarget, tempMod int) string {
+func getTargetDetail(report response.AnnualReportTarget, tempMod int) response.TargetDetail {
 	var targetTitle string
+	var targetImage string
 
 	var listA = [3]string{"Target Achiever", "On Target", "Completionist!"}
 	n, err := strconv.Atoi(report.FinishedTarget)
 	if err == nil {
 		if n >= 1 {
 			targetTitle = listA[tempMod]
+			targetImage = fmt.Sprint("Target-", n)
 		} else {
 			targetTitle = ""
+			targetImage = ""
 		}
 	} else {
-		fmt.Println(targetTitle, "is not an integer.")
+		fmt.Println(report.FinishedTarget, "is not an integer.")
 		targetTitle = ""
+		targetImage = ""
 	}
 
-	return targetTitle
+	single := response.TargetDetail{
+		TargetTitle: targetTitle,
+		TargetImage: targetImage,
+	}
+
+	return single
 }
 
-func getInvestTitle(investTimes string, tempMod int) string {
+func getInvestDetail(investTimes string, tempMod int) response.InvestmentDetail {
 	var investTitle string
+	var investImage string
+
 	n, err := strconv.Atoi(investTimes)
 	if err == nil {
 		var listA = [3]string{"Investor Pemula", "Newbie Investor", "Investor Awal"}
@@ -222,23 +233,35 @@ func getInvestTitle(investTimes string, tempMod int) string {
 
 		if n < 1 {
 			investTitle = ""
+			investImage = ""
 		} else if n >= 1 && n <= 5 {
 			investTitle = listA[tempMod]
+			investImage = fmt.Sprint("Invest-", 1)
 		} else if n > 5 && n <= 10 {
 			investTitle = listB[tempMod]
+			investImage = fmt.Sprint("Invest-", 2)
 		} else if n > 10 {
 			investTitle = listC[tempMod]
+			investImage = fmt.Sprint("Invest-", 3)
 		}
 
 	} else {
 		fmt.Println(investTimes, "is not an integer.")
 		investTitle = ""
+		investImage = ""
 	}
-	return investTitle
+
+	single := response.InvestmentDetail{
+		InvestmentTitle: investTitle,
+		InvestmentImage: investImage,
+	}
+	return single
 }
 
-func getJoinTitle(joinedTime string, tempMod int) string {
+func getJoinDetail(joinedTime string, tempMod int) response.JoinDetail {
 	var joinedTitle string
+	var joinedImage string
+
 	n, err := strconv.Atoi(joinedTime)
 	if err == nil {
 		var listA = [3]string{"Newcomer", "Freshman", "Apprentices"}
@@ -247,15 +270,23 @@ func getJoinTitle(joinedTime string, tempMod int) string {
 
 		if n < 90 {
 			joinedTitle = listA[tempMod]
+			joinedImage = fmt.Sprint("Join-", 1)
 		} else if n >= 90 && n <= 180 {
 			joinedTitle = listB[tempMod]
+			joinedImage = fmt.Sprint("Join-", 2)
 		} else if n > 180 {
 			joinedTitle = listC[tempMod]
+			joinedImage = fmt.Sprint("Join-", 3)
 		}
 
 	} else {
-		fmt.Println(joinedTitle, "is not an integer.")
+		fmt.Println(joinedTime, "is not an integer.")
 		joinedTitle = ""
+		joinedImage = ""
 	}
-	return joinedTitle
+	single := response.JoinDetail{
+		JoinTitle: joinedTitle,
+		JoinImage: joinedImage,
+	}
+	return single
 }

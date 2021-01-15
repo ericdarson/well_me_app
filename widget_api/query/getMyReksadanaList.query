@@ -1,0 +1,7 @@
+select p.id_produk,p.nama_produk,
+        (sum(r.NAB_sekarang * r.jumlah_unit) - sum(r.NAB_Rerata * r.jumlah_unit)) as currProfit
+        from T_reksadana_nasabah r
+        join t_produk_reksadana p on p.id_produk = r.id_produk 
+        where bca_id='%s' and upper(p.nama_produk) like upper('%%%s%%') and p.id_jenis_reksadana in (%s)
+        group by p.nama_produk,p.id_produk
+        order by %s %s

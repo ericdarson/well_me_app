@@ -15,7 +15,7 @@ var (
 
 func PlannerProgressWidgetGetByIds() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		listIds := ctx.Query("IdsPLanner")
+		listIds := ctx.Query("IdsPlanner")
 		fmt.Println("list id: " + listIds)
 		var getListPlanner response.PlannerProgressWidgetResponse
 		var outputSchema []response.PlannerProgressWidgetOutputSchema

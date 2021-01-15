@@ -12,7 +12,7 @@ import (
 )
 
 type DailyProfitWidgetDao interface {
-	GetDailyProfitWidget(string) []response.GetDailyProfitWidgetOutputSchema
+	GetDailyProfitWidget(string, string) []response.GetDailyProfitWidgetOutputSchema
 }
 
 type dailyProfitWidgetDao struct {
@@ -23,7 +23,7 @@ func NewDailyProfit() DailyProfitWidgetDao {
 	return &dailyProfitWidgetDao{}
 }
 
-func (dao *dailyProfitWidgetDao) GetDailyProfitWidget(listIds string) []response.GetDailyProfitWidgetOutputSchema {
+func (dao *dailyProfitWidgetDao) GetDailyProfitWidget(bcaId string, listIds string) []response.GetDailyProfitWidgetOutputSchema {
 	var listProduk []response.GetDailyProfitWidgetOutputSchema
 	conn := dbconnection.New()
 	db := conn.GetConnection()
@@ -55,7 +55,7 @@ func (dao *dailyProfitWidgetDao) GetDailyProfitWidget(listIds string) []response
 		return listProduk
 	}
 	query := string(dat)
-	query = fmt.Sprintf(query, listIds)
+	query = fmt.Sprintf(query, bcaId, listIds)
 	fmt.Println(query)
 	rows, err := db.Query(query)
 	if err != nil {
@@ -79,7 +79,7 @@ func (dao *dailyProfitWidgetDao) GetDailyProfitWidget(listIds string) []response
 		var chartOneYear []response.ChartData
 
 		rows.Scan(&id, &nama, &currBalance, &currProfit)
-		chartOneYear = getChartQuery(db, dir, "/query/getOneYearPerformance.query", id)
+		chartOneYear = getChartQuery(db, dir, "/query/getOneYearPerformance.query", listIds)
 
 		single := response.GetDailyProfitWidgetOutputSchema{
 			Id:               id,

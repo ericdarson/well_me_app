@@ -6,15 +6,15 @@ type AnnualReportResponse struct {
 }
 
 type AnnualReportOutputSchema struct {
-	BcaId           string             `json:"bcaId"`
-	Nama            string             `json:"nama"`
-	JoinedTime      string             `json:"joinedTime"`
-	InvestmentTimes string             `json:"investmentTimes"`
-	ReportTarget    AnnualReportTarget `json:"annualReportTarget"`
-	TopReksadana    []string           `json:"topReksadana"`
-	TargetTitle     string             `json:"targetTitle"`
-	InvestmentTitle string             `json:"investmentTitle"`
-	JoinTitle       string             `json:"joinTitle"`
+	BcaId            string             `json:"bcaId"`
+	Nama             string             `json:"nama"`
+	JoinedTime       string             `json:"joinedTime"`
+	InvestmentTimes  string             `json:"investmentTimes"`
+	ReportTarget     AnnualReportTarget `json:"annualReportTarget"`
+	TopReksadana     []string           `json:"topReksadana"`
+	DetailTarget     TargetDetail       `json:"detailTarget"`
+	DetailInvestment InvestmentDetail   `json:"detailInvestment"`
+	DetailJoin       JoinDetail         `json:"detailJoin"`
 }
 
 type AnnualReportTarget struct {
@@ -22,4 +22,17 @@ type AnnualReportTarget struct {
 	BestTargetAmount string `json:"bestTargetAmount"`
 	FinishedTarget   string `json:"finishedTargetAmount"`
 	OnProgressTarget string `json:"onProgressTarget"`
+}
+
+type TargetDetail struct {
+	TargetTitle string `json:"targetTitle"`
+	TargetImage string `json:"targetImage"`
+}
+type InvestmentDetail struct {
+	InvestmentTitle string `json:"investmentTitle"`
+	InvestmentImage string `json:"investmentImage"`
+}
+type JoinDetail struct {
+	JoinTitle string `json:"joinTitle"`
+	JoinImage string `json:"joinImage"`
 }
