@@ -1,3 +1,3 @@
-select  nama_plan, goal_amount, current_amount, puzzle_randomize, due_date
+select  nama_plan, goal_amount, current_amount, KATEGORI, puzzle_randomize, to_char(due_date,'dd Mon yy')
 from T_PLANNER
 where id_plan = '%s'

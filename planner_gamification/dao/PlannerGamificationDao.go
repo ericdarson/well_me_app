@@ -56,7 +56,7 @@ func (dao *plannerGamificationDao) GetDetailPlan(idjenis string) response.Planne
 	defer rows.Close()
 
 	for rows.Next() {
-		rows.Scan(&outputSchema.Nama, &outputSchema.Target, &outputSchema.Amount, &outputSchema.Gambar, &outputSchema.DueDate)
+		rows.Scan(&outputSchema.Nama, &outputSchema.Target, &outputSchema.Amount, &outputSchema.Category, &outputSchema.Gambar, &outputSchema.DueDate)
 		outputSchema.Puzzle = outputSchema.Gambar[1:10]
 		outputSchema.Gambar = outputSchema.Gambar[:1]
 	}
