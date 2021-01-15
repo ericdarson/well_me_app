@@ -30,7 +30,7 @@ func SimulationHandler() gin.HandlerFunc {
 			ctx.JSON(400, simulationResponse)
 		} else {
 			re := regexp.MustCompile("(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[012])/((19|20)\\d\\d)")
-			if !(re.MatchString(strings.ReplaceAll(simulationdate, "-", "/"))) {
+			if !(re.MatchString(strings.ReplaceAll(simulationdate, "-", "/"))) || len(simulationdate) != 10 {
 				errorSchema.ErrorCode = "BIT-17-006"
 				errorSchema.ErrorMessage.English = "INVALID DATE FORMAT"
 				errorSchema.ErrorMessage.Indonesian = "FORMAT TANGGAL TIDAK SESUAI"

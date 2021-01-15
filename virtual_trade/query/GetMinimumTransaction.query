@@ -1,3 +1,3 @@
-select MINIMUM_UNIT
+select MINIMUM_AMOUNT
 from T_Produk_reksadana
 WHERE id_produk = '%s'

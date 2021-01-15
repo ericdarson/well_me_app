@@ -36,7 +36,7 @@ func GetDetailProdukReksadanaHandler() gin.HandlerFunc {
 			errorSchema.ErrorMessage.Indonesian = "ID HANYA BOLEH MENGANDUNG ANGKA"
 			detailProdukReksadanaResponse.ErrorSchema = errorSchema
 			ctx.JSON(400, detailProdukReksadanaResponse)
-		} else if !(re.MatchString(strings.ReplaceAll(simulationdate, "-", "/"))) {
+		} else if !(re.MatchString(strings.ReplaceAll(simulationdate, "-", "/"))) || len(simulationdate) != 10 {
 			errorSchema.ErrorCode = "BIT-17-006"
 			errorSchema.ErrorMessage.English = "INVALID DATE FORMAT"
 			errorSchema.ErrorMessage.Indonesian = "FORMAT TANGGAL TIDAK SESUAI"

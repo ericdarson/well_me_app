@@ -15,4 +15,4 @@ from(
         and t.id_jenis_reksadana = '%s'
     ) sub 
     join T_DAILY_NAB dd on sub.id_produk = dd.id_produk
-WHERE dd.date_daily = (select max(date_daily) from T_DAILY_NAB where trunc(date_daily) <= trunc(add_months(sub.date_daily, -1)) and id_produk = sub.id_produk)
+WHERE dd.date_daily = (select max(date_daily) from T_DAILY_NAB where trunc(date_daily) <= trunc(add_months(sub.date_daily, -12)) and id_produk = sub.id_produk)

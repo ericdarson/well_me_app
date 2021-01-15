@@ -16,7 +16,7 @@ import (
 )
 
 type BobotResikoCMSDao interface {
-	InquiryBobotResiko() map[string][]response.DetailBobotResiko
+	InquiryBobotResiko() []response.InquiryBobotResikoOutputSchema
 	UpdateBobotResiko(request.UpdateBobotResikoRequest) string
 }
 
@@ -27,29 +27,27 @@ func NewBobotResikoCMS() BobotResikoCMSDao {
 	return &bobotResikoCMSDao{}
 }
 
-func (dao *bobotResikoCMSDao) InquiryBobotResiko() map[string][]response.DetailBobotResiko {
-	outputSchema := make(map[string][]response.DetailBobotResiko)
+func (dao *bobotResikoCMSDao) InquiryBobotResiko() []response.InquiryBobotResikoOutputSchema {
+	var outputSchema []response.InquiryBobotResikoOutputSchema
+	tempMap := make(map[string][]response.DetailBobotResiko)
 	conn := dbconnection.New()
 	db := conn.GetConnection()
 
 	dir, err := os.Getwd()
 	if err != nil {
 		fmt.Println(err)
-		outputSchema["1"] = []response.DetailBobotResiko{response.DetailBobotResiko{IDJenis: "-1"}}
-		return outputSchema
+		return []response.InquiryBobotResikoOutputSchema{response.InquiryBobotResikoOutputSchema{BobotResiko: "-1"}}
 	}
 	dat, err := ioutil.ReadFile(dir + "/query/InquiryBobotResiko.query")
 	if err != nil {
 		fmt.Println(err)
-		outputSchema["1"] = []response.DetailBobotResiko{response.DetailBobotResiko{IDJenis: "-1"}}
-		return outputSchema
+		return []response.InquiryBobotResikoOutputSchema{response.InquiryBobotResikoOutputSchema{BobotResiko: "-1"}}
 	}
 	query := string(dat)
 	rows, err := db.Query(query)
 	if err != nil {
 		fmt.Println(err)
-		outputSchema["1"] = []response.DetailBobotResiko{response.DetailBobotResiko{IDJenis: "-1"}}
-		return outputSchema
+		return []response.InquiryBobotResikoOutputSchema{response.InquiryBobotResikoOutputSchema{BobotResiko: "-1"}}
 	}
 	defer rows.Close()
 	for rows.Next() {
@@ -57,7 +55,15 @@ func (dao *bobotResikoCMSDao) InquiryBobotResiko() map[string][]response.DetailB
 		var single response.DetailBobotResiko
 		rows.Scan(&tempbobot, &single.Persentase, &single.IDJenis, &single.NamaJenis)
 
-		outputSchema[tempbobot] = append(outputSchema[tempbobot], single)
+		tempMap[tempbobot] = append(tempMap[tempbobot], single)
+	}
+
+	for key, element := range tempMap {
+		single := response.InquiryBobotResikoOutputSchema{
+			BobotResiko:       key,
+			DetailBobotResiko: element,
+		}
+		outputSchema = append(outputSchema, single)
 	}
 
 	return outputSchema

@@ -1,8 +1,13 @@
 package response
 
 type InquiryBobotResikoResponse struct {
-	ErrorSchema  ErrorSchema                    `json:"error_schema"`
-	OutputSchema map[string][]DetailBobotResiko `json:"output_schema"`
+	ErrorSchema  ErrorSchema                      `json:"error_schema"`
+	OutputSchema []InquiryBobotResikoOutputSchema `json:"output_schema"`
+}
+
+type InquiryBobotResikoOutputSchema struct {
+	BobotResiko       string              `json:"bobot_resiko"`
+	DetailBobotResiko []DetailBobotResiko `json:"detail_bobot_resiko"`
 }
 
 type DetailBobotResiko struct {

@@ -28,7 +28,7 @@ func SimulationStartHandler() gin.HandlerFunc {
 			errorSchema.ErrorMessage.Indonesian = "PARAMETER INPUT TIDAK SESUAI"
 			simulationStartResponse.ErrorSchema = errorSchema
 			ctx.JSON(400, simulationStartResponse)
-		} else if !(re.MatchString(strings.ReplaceAll(startDate, "-", "/"))) {
+		} else if !(re.MatchString(strings.ReplaceAll(startDate, "-", "/"))) || len(startDate) != 10 {
 			errorSchema.ErrorCode = "BIT-17-006"
 			errorSchema.ErrorMessage.English = "INVALID DATE FORMAT"
 			errorSchema.ErrorMessage.Indonesian = "FORMAT TANGGAL TIDAK SESUAI"

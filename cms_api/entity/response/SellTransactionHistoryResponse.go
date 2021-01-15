@@ -8,6 +8,8 @@ type SellTransactionHistoryResponse struct {
 type SellTransactionHistoryOutputSchema struct {
 	TransactionID              string  `json:"transaction_id"`
 	BCAID                      string  `json:"bca_id"`
+	NamaNasabah                string  `json:"nama_nasabah"`
+	EmailNasabah               string  `json:"email_nasabah"`
 	IDProduk                   string  `json:"id_produk"`
 	NamaProduk                 string  `json:"nama_produk"`
 	IDPlan                     string  `json:"id_plan"`
@@ -18,5 +20,5 @@ type SellTransactionHistoryOutputSchema struct {
 	TotalNominal               float64 `json:"total_nominal"`
 	TanggalTransaksi           string  `json:"tanggal_transaksi"`
 	TanggalVerifikasiBank      string  `json:"tanggal_verifikasi_bank"`
-	TanggalVerifikasiPembelian string  `json:"tanggal_verifikasi_pembelian"`
+	TanggalVerifikasiPenjualan string  `json:"tanggal_verifikasi_penjualan"`
 }
