@@ -1,0 +1,10 @@
+select * from (
+    select p.nama_produk as top_produk
+    from T_transaksi_beli t
+    join t_produk_reksadana p on t.id_produk = p.id_produk
+    where t.bca_id = '%s' and t.status_pembelian = 9
+    and trunc(tanggal_pembelian)
+    BETWEEN ADD_MONTHS(sysdate,-12) and to_date(sysdate)
+    group by t.id_produk,p.nama_produk
+    order by count(t.id_produk)
+) where ROWNUM <=3 

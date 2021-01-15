@@ -1,0 +1,4 @@
+SELECT ID_PLAN,NAMA_PLAN
+ FROM T_PLANNER WHERE bca_id = '%s'
+ and upper(nama_plan) like upper('%%%s%%')
+ order by %s %s

@@ -10,8 +10,13 @@ import (
 )
 
 func main() {
+
 	server := gin.Default()
 
+	server.GET("/widget-get-list-reksadana", handler.GetListReksadanaWithFilter())
+	server.GET("/widget-my-list-reksadana", handler.GetMyListReksadanaWithFilter())
+	server.GET("/widget-my-list-planner", handler.GetMyPlannerListWithFilter())
+	server.GET("/widget-get-all-reksadana-type", handler.GetAllReksadanaType())
 	server.GET("/widget-nab", handler.NabWidgetGetByIds())
 	server.GET("/widget-daily-profit", handler.DailyProfitWidgetGetByIds())
 	server.GET("/widget-progress", handler.PlannerProgressWidgetGetByIds())
@@ -26,4 +31,5 @@ func main() {
 	}
 	port := string(dat)
 	server.Run(":" + port)
+
 }

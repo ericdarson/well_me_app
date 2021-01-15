@@ -1,0 +1,1 @@
+select id_jenis_reksadana,nama_jenis from m_jenis_reksadana

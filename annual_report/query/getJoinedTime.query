@@ -1,0 +1,2 @@
+select bca_id,nama,(TO_DATE(sysdate) - TO_DATE(tanggal_join, 'DD-Mon-YY')) as lama_join,no_rekening
+ from t_nasabah where bca_id = '%s'

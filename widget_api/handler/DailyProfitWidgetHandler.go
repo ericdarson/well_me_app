@@ -15,6 +15,7 @@ var (
 
 func DailyProfitWidgetGetByIds() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		bcaId := ctx.Query("bcaid")
 		listIds := ctx.Query("listid")
 		fmt.Println("list id: " + listIds)
 		var getListDailyProfit response.GetDailyProfitWidgetResponse
@@ -23,14 +24,20 @@ func DailyProfitWidgetGetByIds() gin.HandlerFunc {
 
 		isNotDigit := func(c rune) bool { return (c < '0' || c > '9') && c != ',' }
 		b := strings.IndexFunc(listIds, isNotDigit) == -1
-		if !b {
+		if listIds == "" || strings.Contains(listIds, ",,") {
+			errorSchema.ErrorCode = "BIT-17-002"
+			errorSchema.ErrorMessage.English = "INVALID INPUT PARAMETERS"
+			errorSchema.ErrorMessage.Indonesian = "PARAMETER INPUT TIDAK SESUAI"
+			getListDailyProfit.ErrorSchema = errorSchema
+			ctx.JSON(400, getListDailyProfit)
+		} else if !b {
 			errorSchema.ErrorCode = "BIT-17-002"
 			errorSchema.ErrorMessage.English = "ID MUST ONLY CONTAIN A NUMBER"
 			errorSchema.ErrorMessage.Indonesian = "ID HANYA BOLEH MENGANDUNG ANGKA"
 			getListDailyProfit.ErrorSchema = errorSchema
 			ctx.JSON(400, getListDailyProfit)
 		} else {
-			result := daoDailyProfit.GetDailyProfitWidget(listIds)
+			result := daoDailyProfit.GetDailyProfitWidget(bcaId, listIds)
 			if result == nil {
 				errorSchema.ErrorCode = "BIT-17-004"
 				errorSchema.ErrorMessage.English = "DATA NOT FOUND"
