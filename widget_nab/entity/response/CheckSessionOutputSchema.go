@@ -6,6 +6,7 @@ type CheckSessionOutputSchema struct {
 }
 
 type DetailCheckSession struct {
-	Message string `json:"message"`
-	Token   string `json:"new_token"`
+	Username string `json:"username"`
+	Message  string `json:"message"`
+	Token    string `json:"new_token"`
 }

@@ -60,8 +60,9 @@ func (dao *listPlannerDao) GetById(BcaId string) []response.DetailPlanner {
 		return listPlanner
 	}
 	defer rows.Close()
-
+	counter := 0
 	for rows.Next() {
+		counter = counter + 1
 		var IdPlan string
 		var NamaPlan string
 		var Percentage string
@@ -83,6 +84,13 @@ func (dao *listPlannerDao) GetById(BcaId string) []response.DetailPlanner {
 			Kategori:   Kategori,
 		}
 
+		listPlanner = append(listPlanner, single)
+	}
+
+	if counter == 0 {
+		single := response.DetailPlanner{
+			IdPlan: "-2",
+		}
 		listPlanner = append(listPlanner, single)
 	}
 

@@ -10,25 +10,25 @@ import (
 	_ "github.com/godror/godror"
 )
 
-type LoginDao interface {
-	Login(ctx *gin.Context, bcaId string, password string) response.DetailLogin
+type LoginAdminDao interface {
+	LoginAdmin(ctx *gin.Context, username string, password string) response.DetailLoginAdmin
 }
 
-type loginDao struct {
+type loginAdminDao struct {
 	temp string
 }
 
-func NewLoginDao() LoginDao {
-	return &loginDao{}
+func NewLoginAdminDao() LoginAdminDao {
+	return &loginAdminDao{}
 }
-func (dao *loginDao) Login(ctx *gin.Context, bcaId string, password string) response.DetailLogin {
-	var detailLogin response.DetailLogin
+func (dao *loginAdminDao) LoginAdmin(ctx *gin.Context, username string, password string) response.DetailLoginAdmin {
+	var detailLogin response.DetailLoginAdmin
 	conn := dbconnection.New()
 	db := conn.GetConnection()
 
 	var status, message string
 
-	query := `BEGIN SP_LOGIN('` + bcaId + `','` + password + `',:1,:2); END;`
+	query := `BEGIN SP_LOGIN_ADMIN('` + username + `','` + password + `',:1,:2); END;`
 	if _, err := db.Exec(query, sql.Out{Dest: &status}, sql.Out{Dest: &message}); err != nil {
 		log.Printf("Error running %q: %+v", query, err)
 		return detailLogin

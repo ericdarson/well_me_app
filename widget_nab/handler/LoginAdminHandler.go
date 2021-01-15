@@ -9,15 +9,15 @@ import (
 )
 
 var (
-	loginDaoObject dao.LoginDao = dao.NewLoginDao()
+	loginAdminDaoObject dao.LoginAdminDao = dao.NewLoginAdminDao()
 )
 
-type LoginRequest struct {
-	BcaId    string `json:"bcaId"`
+type LoginAdminAdminRequest struct {
+	Username string `json:"username"`
 	Password string `json:"password"`
 }
 
-func Login() gin.HandlerFunc {
+func LoginAdmin() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		ctx.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 		ctx.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -25,19 +25,19 @@ func Login() gin.HandlerFunc {
 		ctx.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
 
 		responseCode := 200
-		loginRequest := LoginRequest{}
-		ctx.Bind(&loginRequest)
+		loginAdminRequest := LoginAdminAdminRequest{}
+		ctx.Bind(&loginAdminRequest)
 		currentTime := time.Now()
-		var loginResponse response.LoginResponse
-		var outputSchema response.LoginOutputSchema
+		var loginAdminResponse response.LoginAdminResponse
+		var outputSchema response.LoginAdminOutputSchema
 		var errorSchema response.ErrorSchema
-		if loginRequest.BcaId == "" || loginRequest.Password == "" {
+		if loginAdminRequest.Username == "" || loginAdminRequest.Password == "" {
 			errorSchema.ErrorCode = "BIT-17-002"
 			errorSchema.ErrorMessage.English = "INVALID INPUT PARAMETERS"
 			errorSchema.ErrorMessage.Indonesian = "PARAMETER INPUT TIDAK SESUAI"
 			responseCode = 400
 		} else {
-			result := loginDaoObject.Login(ctx, loginRequest.BcaId, loginRequest.Password)
+			result := loginAdminDaoObject.LoginAdmin(ctx, loginAdminRequest.Username, loginAdminRequest.Password)
 			if result.Message == "" {
 				errorSchema.ErrorCode = "BIT-17-005"
 				errorSchema.ErrorMessage.English = "GENERAL ERROR"
@@ -45,15 +45,15 @@ func Login() gin.HandlerFunc {
 				responseCode = 500
 			} else {
 				outputSchema.SystemDate = currentTime.Format("2006-01-02")
-				outputSchema.DetailLogin = result
+				outputSchema.DetailLoginAdmin = result
 				errorSchema.ErrorCode = "BIT-00-000"
 				errorSchema.ErrorMessage.English = "SUCCESS"
 				errorSchema.ErrorMessage.Indonesian = "BERHASIL"
-				loginResponse.OutputSchema = outputSchema
+				loginAdminResponse.OutputSchema = outputSchema
 				responseCode = 200
 			}
 		}
-		loginResponse.ErrorSchema = errorSchema
-		ctx.JSON(responseCode, loginResponse)
+		loginAdminResponse.ErrorSchema = errorSchema
+		ctx.JSON(responseCode, loginAdminResponse)
 	}
 }

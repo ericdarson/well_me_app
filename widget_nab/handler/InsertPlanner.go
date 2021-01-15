@@ -30,19 +30,22 @@ func InsertPlanner() gin.HandlerFunc {
 		insertPlannerRequest := InsertPlannerRequest{}
 		err := ctx.Bind(&insertPlannerRequest)
 		_, err2 := strconv.ParseFloat(insertPlannerRequest.GoalAmount, 32)
+		layout := "02-01-2006"
+		_, err3 := time.Parse(layout, insertPlannerRequest.DueDate)
 		currentTime := time.Now()
+
 		var insertPlannerResponse response.InsertPlannerResponse
 		var outputSchema response.InsertPlannerOutputSchema
 		var errorSchema response.ErrorSchema
-		if err2 != nil || err != nil || insertPlannerRequest.BcaId == "" || insertPlannerRequest.NamaPlan == "" || (insertPlannerRequest.Periodic != "Weekly" && insertPlannerRequest.Periodic != "Monthly" && insertPlannerRequest.Periodic != "Yearly") {
-			log.Printf("Error : %+v", err)
+		if err2 != nil || err != nil || err3 != nil || insertPlannerRequest.BcaId == "" || insertPlannerRequest.NamaPlan == "" || (insertPlannerRequest.Periodic != "Weekly" && insertPlannerRequest.Periodic != "Monthly" && insertPlannerRequest.Periodic != "Yearly") || insertPlannerRequest.Kategori == "" {
+			log.Printf("Error : %+v", err3, err, err2, insertPlannerRequest.BcaId, insertPlannerRequest.NamaPlan, insertPlannerRequest.Periodic)
 			errorSchema.ErrorCode = "BIT-17-002"
 			errorSchema.ErrorMessage.English = "INVALID INPUT PARAMETERS"
 			errorSchema.ErrorMessage.Indonesian = "PARAMETER INPUT TIDAK SESUAI"
 			responseCode = 400
 		} else {
 			result := insertPlannerDaoObject.InsertPlanner(insertPlannerRequest.BcaId, insertPlannerRequest.NamaPlan, insertPlannerRequest.GoalAmount, "0", insertPlannerRequest.Periodic, insertPlannerRequest.DueDate, insertPlannerRequest.Kategori)
-			if result == "GAGAL" {
+			if result == "Gagal" {
 				errorSchema.ErrorCode = "BIT-17-005"
 				errorSchema.ErrorMessage.English = "GENERAL ERROR"
 				errorSchema.ErrorMessage.Indonesian = "SISTEM SEDANG DIPERBAIKI"
