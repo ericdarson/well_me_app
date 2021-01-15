@@ -6,10 +6,11 @@ type PlannerGamificationResponse struct {
 }
 
 type PlannerGamificationOutputSchema struct {
-	Nama    string `json:"nama_plan"`
-	Target  int    `json:"target_plan"`
-	Amount  int    `json:"current_amount"`
-	Gambar  string `json:"gambar"`
-	Puzzle  string `json:"puzzle_sequence"`
-	DueDate string `json:"due_date"`
+	Nama     string `json:"nama_plan"`
+	Target   int    `json:"target_plan"`
+	Amount   int    `json:"current_amount"`
+	Category string `json:"category"`
+	Gambar   string `json:"gambar"`
+	Puzzle   string `json:"puzzle_sequence"`
+	DueDate  string `json:"due_date"`
 }
