@@ -103,7 +103,7 @@ func (dao *reksadanaDao) InquiryProdukReksadana(idJenis string, filter string) [
 	for rows.Next() {
 
 		single := response.ProdukReksadanaOutputSchema{}
-		rows.Scan(&single.ID, &single.Nama, &single.Nab, &single.Minimum, &single.ExpenseRatio, &single.TotalAUM, &single.ManagerInvestasi, &single.Resiko, &single.LevelResiko, &single.BankKustodian, &single.BankPenampung, &single.KinerjaSatuMinggu, &single.KinerjaSatuBulan, &single.KinerjaTigaBulan, &single.KinerjaSatuTahun, &single.IDJenis, &single.NamaJenis, &single.URLVendor, &single.PwVendor)
+		rows.Scan(&single.ID, &single.Nama, &single.Nab, &single.Minimum, &single.ExpenseRatio, &single.TotalAUM, &single.ManagerInvestasi, &single.Resiko, &single.LevelResiko, &single.BankKustodian, &single.BankPenampung, &single.KinerjaSatuMinggu, &single.KinerjaSatuBulan, &single.KinerjaTigaBulan, &single.KinerjaSatuTahun, &single.IDJenis, &single.NamaJenis, &single.URLVendor, &single.PwVendor, &single.BiayaPembelian, &single.BiayaPenjualan, &single.MinimumSisaUnit)
 		outputSchema = append(outputSchema, single)
 	}
 	return outputSchema
@@ -157,8 +157,8 @@ func (dao *reksadanaDao) InsertProdukReksadana(req request.ProdukReksadanaReques
 	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 	defer cancel()
 
-	query := `BEGIN SP_INSERT_PRODUK_REKSADANA('%s',%d,%f,%f,%f,'%s','%s',%d,'%s','%s','%s','%s', %f,'SYSTEM API',:1 ); END;`
-	query = fmt.Sprintf(query, req.Nama, req.IDJenisReksadana, req.MinimumPembelian, req.ExpenseRatio, req.TotalAUM, req.ManagerInvestasi, req.TingkatResiko, req.LevelResiko, req.BankKustodian, req.BankPenampung, req.URLVendor, req.PwVendor, req.BiayaPembelian)
+	query := `BEGIN SP_INSERT_PRODUK_REKSADANA('%s',%d,%f,%f,%f,'%s','%s',%d,'%s','%s','%s','%s', %f, %f, %f,'SYSTEM API',:1 ); END;`
+	query = fmt.Sprintf(query, req.Nama, req.IDJenisReksadana, req.MinimumPembelian, req.ExpenseRatio, req.TotalAUM, req.ManagerInvestasi, req.TingkatResiko, req.LevelResiko, req.BankKustodian, req.BankPenampung, req.URLVendor, req.PwVendor, req.BiayaPembelian, req.BiayaPenjualan, req.MinimumSisaUnit)
 	fmt.Println(query)
 	if _, err := db.ExecContext(ctx, query, sql.Out{Dest: &result}); err != nil {
 		log.Printf("Error running %q: %+v", query, err)
@@ -175,8 +175,8 @@ func (dao *reksadanaDao) UpdateProdukReksadana(req request.ProdukReksadanaReques
 	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 	defer cancel()
 
-	query := `BEGIN SP_UPDATE_PRODUK_REKSADANA('%s', '%s',%d,%f,%f,%f,'%s','%s',%d,'%s','%s','%s','%s', %f,'SYSTEM API',:1 ); END;`
-	query = fmt.Sprintf(query, idProduk, req.Nama, req.IDJenisReksadana, req.MinimumPembelian, req.ExpenseRatio, req.TotalAUM, req.ManagerInvestasi, req.TingkatResiko, req.LevelResiko, req.BankKustodian, req.BankPenampung, req.URLVendor, req.PwVendor, req.BiayaPembelian)
+	query := `BEGIN SP_UPDATE_PRODUK_REKSADANA('%s', '%s',%d,%f,%f,%f,'%s','%s',%d,'%s','%s','%s','%s', %f, %f, %f,'SYSTEM API',:1 ); END;`
+	query = fmt.Sprintf(query, idProduk, req.Nama, req.IDJenisReksadana, req.MinimumPembelian, req.ExpenseRatio, req.TotalAUM, req.ManagerInvestasi, req.TingkatResiko, req.LevelResiko, req.BankKustodian, req.BankPenampung, req.URLVendor, req.PwVendor, req.BiayaPembelian, req.BiayaPenjualan, req.MinimumSisaUnit)
 	fmt.Println(query)
 	if _, err := db.ExecContext(ctx, query, sql.Out{Dest: &result}); err != nil {
 		log.Printf("Error running %q: %+v", query, err)

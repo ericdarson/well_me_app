@@ -14,4 +14,6 @@ type ProdukReksadanaRequest struct {
 	URLVendor        string  `json:"url_vendor" binding:"required"`
 	PwVendor         string  `json:"password_vendor_md5" binding:"required"`
 	BiayaPembelian   float64 `json:"biaya_pembelian" binding:"required"`
+	BiayaPenjualan   float64 `json:"biaya_penjualan" binding:"required"`
+	MinimumSisaUnit  float64 `json:"minimum_sisa_unit" binding:"required"`
 }

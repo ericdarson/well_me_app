@@ -27,17 +27,14 @@ func InquiryBobotResiko() gin.HandlerFunc {
 			ctx.JSON(403, JSONReponse)
 		} else {
 			outputSchema := daoBobotResiko.InquiryBobotResiko()
-			var lastkey string
-			for k := range outputSchema {
-				lastkey = k
-			}
+
 			if outputSchema == nil {
 				errorSchema.ErrorCode = "BIT-17-003"
 				errorSchema.ErrorMessage.English = "NO DATA FOUND"
 				errorSchema.ErrorMessage.Indonesian = "TIDAK ADA DATA YANG DITEMUKAN"
 				JSONReponse.ErrorSchema = errorSchema
 				ctx.JSON(200, JSONReponse)
-			} else if outputSchema[lastkey][0].IDJenis == "-1" {
+			} else if outputSchema[0].BobotResiko == "-1" {
 				errorSchema.ErrorCode = "BIT-17-005"
 				errorSchema.ErrorMessage.English = "GENERAL ERROR"
 				errorSchema.ErrorMessage.Indonesian = "SISTEM SEDANG DIPERBAIKI"

@@ -6,7 +6,7 @@ select
         t.TOTAL_AUM,
         t.manager_investasi,
         t.tingkat_resiko,
-        t.minimum_unit,
+        t.minimum_amount,
         t.bank_kustodian,
         t.bank_penampung,
         to_char(d.date_daily,'dd-mm-yyyy'),

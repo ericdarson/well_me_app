@@ -8,6 +8,8 @@ type TransactionHistoryResponse struct {
 type TransactionHistoryOutputSchema struct {
 	TransactionID              string  `json:"transaction_id"`
 	BCAID                      string  `json:"bca_id"`
+	NamaNasabah                string  `json:"nama_nasabah"`
+	EmailNasabah               string  `json:"email_nasabah"`
 	IDProduk                   string  `json:"id_produk"`
 	NamaProduk                 string  `json:"nama_produk"`
 	IDPlan                     string  `json:"id_plan"`

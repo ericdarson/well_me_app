@@ -25,4 +25,7 @@ type ProdukReksadanaOutputSchema struct {
 	NamaJenis         string  `json:"nama_jenis_reksadana"`
 	URLVendor         string  `json:"url_vendor"`
 	PwVendor          string  `json:"password_vendor_md5"`
+	BiayaPembelian    float64 `json:"biaya_pembelian"`
+	BiayaPenjualan    float64 `json:"biaya_penjualan"`
+	MinimumSisaUnit   float64 `json:"minimum_sisa_unit"`
 }

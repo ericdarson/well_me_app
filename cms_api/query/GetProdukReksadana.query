@@ -1,8 +1,8 @@
 select 
     p.id_produk,
 	p.nama_produk,
-	p.nab,
-	p.minimum_unit,
+	nvl(p.nab,0),
+	p.minimum_amount,
 	p.expense_ratio,
 	p.total_aum,
 	p.manager_investasi,
@@ -10,13 +10,16 @@ select
 	p.level_resiko,
 	p.bank_kustodian,
 	p.bank_penampung,
-	p.weekly_nab,
-	p.monthly_nab,
-	p.three_months_nab,
-	p.year_on_year_nab,
+	nvl(p.weekly_nab,0),
+	nvl(p.monthly_nab,0),
+	nvl(p.three_months_nab,0),
+	nvl(p.year_on_year_nab,0),
 	p.id_jenis_reksadana,
 	j.nama_jenis,
 	URL_VENDOR,
-	PASSWORD_VENDOR
+	PASSWORD_VENDOR,
+	BIAYA_PEMBELIAN,
+	BIAYA_PENJUALAN,
+	MINIMUM_SISA_UNIT
 from T_PRODUK_REKSADANA P JOIN M_JENIS_REKSADANA j ON p.id_jenis_reksadana = j.id_jenis_reksadana
 where j.id_jenis_reksadana %s (%s)

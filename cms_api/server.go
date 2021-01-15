@@ -48,6 +48,9 @@ func main() {
 	server.GET("/daily-nab/products/:id-jenis", handler.GetDailyProducts())
 	server.POST("/daily-nab/products", handler.InsertDailyProducts())
 
+	//nasabah
+	server.GET("/nasabah/:bca-id", handler.GetDataNasabah())
+
 	dir, err := os.Getwd()
 	if err != nil {
 		fmt.Println(err)

@@ -57,7 +57,7 @@ func (dao *transactionCMSDao) InquiryHistoryPembelian(bcaid string) []response.T
 
 	for rows.Next() {
 		single := response.TransactionHistoryOutputSchema{}
-		rows.Scan(&single.TransactionID, &single.BCAID, &single.IDProduk, &single.NamaProduk, &single.IDPlan, &single.NamaPlan, &single.Status, &single.KodePromo, &single.Nab, &single.JumlahUnit, &single.TotalNominal, &single.TanggalTransaksi, &single.TanggalVerifikasiBank, &single.TanggalVerifikasiPembelian)
+		rows.Scan(&single.TransactionID, &single.BCAID, &single.NamaNasabah, &single.EmailNasabah, &single.IDProduk, &single.NamaProduk, &single.IDPlan, &single.NamaPlan, &single.Status, &single.KodePromo, &single.Nab, &single.JumlahUnit, &single.TotalNominal, &single.TanggalTransaksi, &single.TanggalVerifikasiBank, &single.TanggalVerifikasiPembelian)
 		outputSchema = append(outputSchema, single)
 	}
 
@@ -91,7 +91,7 @@ func (dao *transactionCMSDao) InquiryHistoryPenjualan(bcaid string) []response.S
 
 	for rows.Next() {
 		single := response.SellTransactionHistoryOutputSchema{}
-		rows.Scan(&single.TransactionID, &single.BCAID, &single.IDProduk, &single.NamaProduk, &single.IDPlan, &single.NamaPlan, &single.Status, &single.Nab, &single.JumlahUnit, &single.TotalNominal, &single.TanggalTransaksi, &single.TanggalVerifikasiBank, &single.TanggalVerifikasiPembelian)
+		rows.Scan(&single.TransactionID, &single.BCAID, &single.NamaNasabah, &single.EmailNasabah, &single.IDProduk, &single.NamaProduk, &single.IDPlan, &single.NamaPlan, &single.Status, &single.Nab, &single.JumlahUnit, &single.TotalNominal, &single.TanggalTransaksi, &single.TanggalVerifikasiBank, &single.TanggalVerifikasiPenjualan)
 		outputSchema = append(outputSchema, single)
 	}
 
