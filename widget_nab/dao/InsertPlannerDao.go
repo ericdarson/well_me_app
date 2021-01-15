@@ -27,11 +27,13 @@ func (dao *insertPlannerDao) InsertPlanner(bcaId string, namaPlan string, goalAm
 	var detailInsertPlanner string
 	conn := dbconnection.New()
 	db := conn.GetConnection()
-
 	var status string
+	layout := "02-01-2006"
+	dt, _ := time.Parse(layout, dueDate)
+	dtstr2 := dt.Format("02-Jan-2006")
 	fmt.Println(goalAmount)
 	puzzle_randomize := CreatePuzzleRandomize()
-	query := `BEGIN SP_INSERT_PLANNER('` + bcaId + `','` + namaPlan + `','` + goalAmount + `','` + currentAmount + `','` + periodic + `','` + dueDate + `','` + bcaId + `','` + kategori + `','` + puzzle_randomize + `',:1); END;`
+	query := `BEGIN SP_INSERT_PLANNER('` + bcaId + `','` + namaPlan + `','` + goalAmount + `','` + currentAmount + `','` + periodic + `','` + dtstr2 + `','` + bcaId + `','` + kategori + `','` + puzzle_randomize + `',:1); END;`
 	if _, err := db.Exec(query, sql.Out{Dest: &status}); err != nil {
 		log.Printf("Error running %q: %+v", query, err)
 		return detailInsertPlanner
@@ -39,6 +41,7 @@ func (dao *insertPlannerDao) InsertPlanner(bcaId string, namaPlan string, goalAm
 		if status == "1" {
 			detailInsertPlanner = "Sukses"
 		} else {
+			fmt.Println(status)
 			detailInsertPlanner = "Gagal"
 		}
 	}

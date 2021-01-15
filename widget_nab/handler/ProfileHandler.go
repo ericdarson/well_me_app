@@ -16,6 +16,7 @@ func Profile() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		profileRequest := ctx.Query("bcaId")
 		currentTime := time.Now()
+		var responseCode int
 		var profileResponse response.ProfileResponse
 		var outputSchema response.ProfileOutputSchema
 		var errorSchema response.ErrorSchema
@@ -23,6 +24,7 @@ func Profile() gin.HandlerFunc {
 			errorSchema.ErrorCode = "BIT-17-002"
 			errorSchema.ErrorMessage.English = "INVALID INPUT PARAMETERS"
 			errorSchema.ErrorMessage.Indonesian = "PARAMETER INPUT TIDAK SESUAI"
+			responseCode = 400
 		} else {
 			result := profileDaoObject.GetById(profileRequest)
 
@@ -30,6 +32,7 @@ func Profile() gin.HandlerFunc {
 				errorSchema.ErrorCode = "BIT-17-004"
 				errorSchema.ErrorMessage.English = "DATA NOT FOUND"
 				errorSchema.ErrorMessage.Indonesian = "DATA TIDAK DITEMUKAN"
+				responseCode = 404
 			} else {
 				outputSchema.SystemDate = currentTime.Format("2006-01-02")
 				outputSchema.DetailProfile = result
@@ -37,9 +40,10 @@ func Profile() gin.HandlerFunc {
 				errorSchema.ErrorMessage.English = "SUCCESS"
 				errorSchema.ErrorMessage.Indonesian = "BERHASIL"
 				profileResponse.OutputSchema = outputSchema
+				responseCode = 200
 			}
 		}
 		profileResponse.ErrorSchema = errorSchema
-		ctx.JSON(200, profileResponse)
+		ctx.JSON(responseCode, profileResponse)
 	}
 }

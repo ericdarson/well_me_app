@@ -15,7 +15,13 @@ var (
 func Logout() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		responseCode := 200
-		logoutRequest := ctx.Query("token")
+		request := ctx.Request.Header["Token"]
+		var logoutRequest string
+		if request != nil {
+
+			logoutRequest = request[0]
+		}
+
 		currentTime := time.Now()
 		var logoutResponse response.LogoutResponse
 		var outputSchema response.LogoutOutputSchema
