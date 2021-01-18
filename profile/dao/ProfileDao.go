@@ -20,10 +20,10 @@ type profiletDao struct {
 }
 
 func NewProfileDao() ProfileDao {
-	return &nabWidgetDao{}
+	return &profiletDao{}
 }
 
-func (dao *nabWidgetDao) GetById(id string) response.DetailProfile {
+func (dao *profiletDao) GetById(id string) response.DetailProfile {
 	entityResponse := response.DetailProfile{}
 	conn := dbconnection.New()
 	db := conn.GetConnection()

@@ -12,7 +12,8 @@ import (
 func main() {
 	server := gin.Default()
 
-	server.GET("/widget-nab", handler.NabWidgetGetByIds())
+	server.GET("/getProfile", handler.Profile())
+
 	dir, err := os.Getwd()
 	if err != nil {
 		fmt.Println(err)
