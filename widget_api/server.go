@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"widget_api/handler"
+	"widget_api/middlewares"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,6 +13,8 @@ import (
 func main() {
 
 	server := gin.Default()
+
+	server.Use(middlewares.LoggerToFile())
 
 	server.GET("/widget-get-list-reksadana", handler.GetListReksadanaWithFilter())
 	server.GET("/widget-my-list-reksadana", handler.GetMyListReksadanaWithFilter())
