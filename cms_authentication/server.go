@@ -11,8 +11,9 @@ import (
 
 func main() {
 	server := gin.Default()
-
-	server.GET("/widget-nab", handler.NabWidgetGetByIds())
+	server.POST("/loginAdmin", handler.LoginAdmin())
+	server.GET("/checkSessionAdmin", handler.CheckSessionAdmin())
+	server.GET("/logoutAdmin", handler.LogoutAdmin())
 	dir, err := os.Getwd()
 	if err != nil {
 		fmt.Println(err)

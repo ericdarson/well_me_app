@@ -11,8 +11,11 @@ import (
 
 func main() {
 	server := gin.Default()
-
-	server.GET("/widget-nab", handler.NabWidgetGetByIds())
+	server.POST("/insertPlanner", handler.InsertPlanner())
+	server.GET("/getListPlanner", handler.ListPlanner())
+	server.PUT("/updatePlanner", handler.UpdatePlanner())
+	server.DELETE("/deletePlanner", handler.DeletePlanner())
+	server.POST("/simulasiPlanner", handler.TargetSimulationPlanner())
 	dir, err := os.Getwd()
 	if err != nil {
 		fmt.Println(err)
